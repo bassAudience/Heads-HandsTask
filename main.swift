@@ -26,6 +26,16 @@ func swap(_ arr: inout Array<Int>, _ a: Int, _ b: Int) {
     arr[b] = c
 }
 
+func reverse(_ arr: inout Array<Int>) {
+    let N = arr.count
+    for i in 0..<N/2 {
+        let c = arr[i]
+        arr[i] = arr[N-1-i]
+        arr[N-1-i] = c
+    }
+}
+
+
 func MedianOfThree(_ arr: inout Array<Int>, _ size: Int) -> Int {
     let pivot: Int = (size-1) / 2;                   // pivot splits array into two sub-arrays
     if (arr[0] > arr[size-1]) {
@@ -41,7 +51,7 @@ func MedianOfThree(_ arr: inout Array<Int>, _ size: Int) -> Int {
     return pivot;
 }
 
-func QuickSort(_ arr: inout Array<Int>, _ ascending: Bool) {
+func QuickSort(_ arr: inout Array<Int>) {
     let size = arr.count
     if (size > 2) {
         var pivot: Int = MedianOfThree(&arr, size)
@@ -74,8 +84,8 @@ func QuickSort(_ arr: inout Array<Int>, _ ascending: Bool) {
         }                                           // split array into two:
         var first = Array(arr[0..<pivot])           // slice with values less than pivot
         var second = Array(arr[pivot+1..<size])     // slice with values more than pivot
-        QuickSort(&first, ascending)
-        QuickSort(&second, ascending)
+        QuickSort(&first)
+        QuickSort(&second)
         arr = first + [arr[pivot]] + second
     }
     else {
@@ -127,7 +137,10 @@ func main(_ N: Int) -> Array<Array<Int>> {
     var orderList = generateArrays(N, &arrayLengthSeed, &numberSeed)
     
     for i in 0..<N {
-        QuickSort(&orderList[i], true)
+        QuickSort(&orderList[i])
+        if i%2 == 0 {
+            reverse(&orderList[i])
+        }
     }
     return orderList
 }
